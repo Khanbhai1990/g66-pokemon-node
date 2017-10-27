@@ -1,0 +1,19 @@
+<!-- DO NOT TOUCH LINE 3 ! This imports our HTML layout-->
+<!-- Everything below line 3 feel free to delete and or build on. This is just sample data -->
+<%- contentFor('body') %>
+<h1><%=pokemon.name%></h1>
+
+<% console.log(pokemon) %>
+
+
+<form class="" action="/pokemon/edit/<%=pokemon.id%>" method="post">
+      <input type="number" name="cp" value="<%=pokemon.cp%>">
+      <input type="checkbox" name="in_gym" value="true">true
+      <input type="checkbox" name="in_gym" value="false">false
+      <select name="trainer_id">
+      <%for (let i=0;i<trainers.length;i++){%>
+      <option value='<%=trainers[i].id%>'><%=trainers[i].name%></option>
+      <%}%>
+      </select>
+      <input type='submit'>
+    </form>

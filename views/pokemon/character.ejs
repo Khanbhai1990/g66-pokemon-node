@@ -1,0 +1,29 @@
+<!-- DO NOT TOUCH LINE 3 ! This imports our HTML layout-->
+<!-- Everything below line 3 feel free to delete and or build on. This is just sample data -->
+<%- contentFor('body') %>
+
+<%console.log(pokemon)%>
+<table class="darkTable" >
+
+      <thead>
+        <tr>
+        <th>ID</th>
+        <th>name</th>
+        <th>trainer name</th>
+        <th>cp</th>
+        <th>in_gym</th>
+      </tr>
+      </thead>
+  <tbody>
+    <tr >
+      <td><%=pokemon.id%></td>
+      <td><%=pokemon.name%></td>
+      <td><%=pokemon.trainers_name%></td>
+      <td><%=pokemon.cp%></td>
+      <td><%=pokemon.in_gym%></td>
+      <td><button type="button" name="button"><a href="/pokemon/delete/<%=pokemon.id%>">Delete</a></button></td>
+      <td><button type="button" name="button"><a href="/pokemon/edit/<%=pokemon.id%>">Edit</a></button></td>
+
+    </tbody>
+
+  </table>

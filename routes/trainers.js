@@ -1,9 +1,18 @@
+const knex = require('../db/knex.js');
 var express = require('express');
 var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('trainers/index', {passedInData: "xyz"});
+  knex('pokemon')
+      .then((pokemon)=>{
+        res.render('trainers/index', {pokemon});
+      })
+      .catch((err)=>{
+        console.error(err);
+      });
+
+
 });
 
 module.exports = router;
