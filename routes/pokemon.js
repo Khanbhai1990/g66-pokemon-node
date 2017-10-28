@@ -8,6 +8,16 @@ router.get('/', function(req, res, next) {
   if (!req.session.accum){
     req.session.accum = 0
   }
+
+  if (!req.session.playerOneCp){
+    req.session.playerOneCp = 0
+  }
+
+  if (!req.session.playerTwoCp){
+    req.session.playerTwoCp = 0
+  }
+
+
   knex('pokemon')
       .join('trainers','trainers.id', '=', 'trainer_id')
       .select('pokemon.id','pokemon.name', 'pokemon.trainer_id', 'pokemon.cp', 'pokemon.in_gym', 'trainers.name as trainers_name')
@@ -103,8 +113,20 @@ router.get('/character/:id', function(req, res, next) {
 
 router.get('/gym/:id', function(req,res,next){
 req.session.accum++
+
+if (req.session.addOne === 1){
+  req.session.p1 = true
+  req.session.accum = 3
+
+}
+
+if (req.session.add === 1){
+  req.session.p2 = true
+  req.session.accum=4
+
+}
   if (req.session.accum===1){
-    console.log("p1 is ready")
+    console.log("p1 is true")
     req.session.p1 = "true"
   knex('pokemon')
       .where('id', req.params.id)
@@ -116,7 +138,10 @@ req.session.accum++
         in_gym: req.session.p1
       }, '*')
       .then((result)=>{
-
+          req.session.playerOneCp = result[0].cp
+          req.session.save(function (err){
+            if (err) throw err;
+          })
       })
       .catch((err)=>{
         console.error(err);
@@ -124,7 +149,7 @@ req.session.accum++
   }
 
   if (req.session.accum===2){
-    console.log("p2 is ready")
+    console.log("p2 is true")
 
     req.session.p2 = "true"
   knex('pokemon')
@@ -137,16 +162,23 @@ req.session.accum++
         in_gym: req.session.p2
       }, '*')
       .then((result)=>{
-
+          req.session.playerTwoCp = result[0].cp
+          req.session.save(function (err){
+            if (err) throw err;
+          })
       })
       .catch((err)=>{
         console.error(err);
       });
   }
 
-  if (req.session.p1 && req.session.accum>2){
-    console.log("p1 is ready")
+  if (req.session.p1 && req.session.accum===3){
+    console.log("p1 is false")
     req.session.p1 = "false"
+    if (req.session.addOne === 1){
+      req.session.accum = 0
+    }
+    req.session.addOne = 0
   knex('pokemon')
       .where('id', req.params.id)
       .update({
@@ -164,9 +196,10 @@ req.session.accum++
       });
   }
 
-  if (req.session.p2 && req.session.accum>3){
-    console.log("p1 is ready")
+  if (req.session.p2 && req.session.accum===4){
+    console.log("p2 is false")
     req.session.p2 = "false"
+    req.session.add =0
     req.session.accum = 0
   knex('pokemon')
       .where('id', req.params.id)
@@ -184,7 +217,11 @@ req.session.accum++
         console.error(err);
       });
   }
-  res.redirect('/')
+  console.log(req.session.accum)
+  req.session.save(function (err){
+    if (err) throw err;
+    res.redirect('/');
+  })
 })
 
 

@@ -1,0 +1,77 @@
+<!-- DO NOT TOUCH LINE 3 ! This imports our HTML layout-->
+<!-- Everything below line 3 feel free to delete and or build on. This is just sample data -->
+<%- contentFor('body') %>
+
+<%let pokeLength =""%>
+<%let pokeLengthTwo =""%>
+<%let count = 0%>
+
+<%if (playerOneCp>0) pokeLength = "hidden"%>
+<%if (playerTwoCp>0) pokeLengthTwo = "hidden"%>
+
+<span style="color:white">
+    <form action="/gym/player1" method="post">
+
+        <select name="id">
+        <%for (let i=0;i<pokemon.length;i++){%>
+          <%if(!pokemon[i].in_gym){%>
+        <option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
+          <%}%>
+        <%}%>
+        </select>
+      <span style="color:black"><<%=pokeLength%>input type="submit"></span>
+      </form>
+
+<%=playerOneCp%>
+  <h3>Pokemon One</h3>
+<%let players = 0%>
+        <%for (let i=0;i<pokemon.length;i++){%>
+        <%if (pokemon[i].in_gym){%>
+          <%players++%>
+          <p><%=pokemon[i].name%></p>
+          <p><%=pokemon[i].cp%></p>
+          <%}%>
+        <%}%>
+
+      <h3>Pokemon Two</h3>
+
+      <form action="/gym/player2" method="post">
+          <select name="id">
+          <%for (let i=0;i<pokemon.length;i++){%>
+            <%if(!pokemon[i].in_gym){%>
+          <option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
+            <%}%>
+          <%}%>
+          </select>
+        <span style="color:black"><<%=pokeLengthTwo%>input type="submit"></span>
+        </form>
+
+<%=playerTwoCp%>
+
+
+          <form action="/gym/reset" method="get">
+    <span style="color:green"><button type="submit">Reset</button></span>
+            </form>
+
+
+              <%if(players===2){%>
+            <form action="/gym/result" method="get">
+          <span style="color:black"><button type="submit">Battle!</button></span>
+              </form>
+              <%}%>
+
+</span>
+
+
+              <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <script type="text/javascript">
+  $(document).ready(function() {
+  $('select').material_select();
+});
+  </script>

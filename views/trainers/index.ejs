@@ -4,13 +4,30 @@
 
 <span style="color:white">Trainers home page.</span>
 
-<button type="button" name="button" id="add_new">+ Add New Trainer</button>
+<%console.log(trainers)%>
+
+<table class="darkTable" >
+
+      <thead>
+        <tr>
+        <th>ID</th>
+        <th>name</th>
+      </tr>
+      </thead>
+  <tbody>
+      <%for (let i=0;i<trainers.length;i++){%>
+    <tr>
+      <td><%=trainers[i].id%></td>
+      <td><a href="/trainers/player/<%=trainers[i].id%>"><%=trainers[i].name%></a></td>
+
+      <%}%>
+    </tbody>
+
+  </table>
+
+
 
 <script type="text/javascript">
-   var btn = document.getElementById("add_new");
-   var passedInData = '<%= passedInData %>' ;
-   btn.addEventListener("click", function(){
-     alert("the button works, and we see "+passedInData);
-   })
+
 
 </script>

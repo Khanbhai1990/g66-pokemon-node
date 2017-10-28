@@ -1,11 +1,13 @@
 <!-- DO NOT TOUCH LINE 3 ! This imports our HTML layout-->
 <!-- Everything below line 3 feel free to delete and or build on. This is just sample data -->
 <%- contentFor('body') %>
-<h1><%=pokemon.name%></h1>
+<span style="color:white">
+  <h1><%=pokemon.name%></h1>
+</span>
 
 <% console.log(pokemon) %>
 
-
+<span style="color:white">
 <form class="" action="/pokemon/edit/<%=pokemon.id%>" method="post">
       <input type="number" name="cp" value="<%=pokemon.cp%>">
       <input type="checkbox" name="in_gym" value="true">true
@@ -17,3 +19,5 @@
       </select>
       <input type='submit'>
     </form>
+
+    </span>
