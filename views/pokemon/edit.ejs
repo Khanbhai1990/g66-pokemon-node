@@ -8,11 +8,16 @@
 
 <% console.log(pokemon) %>
 
+<%var disBtn = ""%>
+  <%if (accum>0){%>
+    <%var disBtn = "disabled"%>
+    <%}%>
+
 <span style="color:white">
 <form class="" action="/pokemon/edit/<%=pokemon.id%>" method="post">
       <input type="number" name="cp" value="<%=pokemon.cp%>">
-      <input type="radio" name="in_gym" value="true">true
-      <input type="radio" name="in_gym" value="false">false
+      <input <%=disBtn%> type="radio" name="in_gym" value="true">true
+      <input <%=disBtn%> type="radio" name="in_gym" value="false">false
       <select name="trainer_id">
       <%for (let i=0;i<trainers.length;i++){%>
       <option value='<%=trainers[i].id%>'><%=trainers[i].name%></option>

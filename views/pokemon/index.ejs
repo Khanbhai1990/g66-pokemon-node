@@ -17,7 +17,7 @@
       </tr>
       </thead>
   <tbody>
-    
+
     <%for (let i=0;i<pokemon.length;i++){%>
     <%if (pokemon[i].in_gym){status="remove pokemon"} else if (accum===2 || add===1 || addOne ===1) {status =""} else {status = "assign to gym"} %>
     <%let image = pokemon[i].name%>
@@ -38,6 +38,10 @@
 
   </table>
 
+<%var disBtn = ""%>
+  <%if (accum>0){%>
+    <%var disBtn = "disabled"%>
+    <%}%>
 
     <div id="myModal" class="modal">
 
@@ -53,8 +57,8 @@
                   <input type="text" name="name" placeholder="name">
                   <input type="number" name="cp" placeholder="cp">
                   In_Gym
-                  <input type="radio" name="in_gym" value="true">true
-                  <input type="radio" name="in_gym" value="false">false
+                  <input <%=disBtn%> type="radio" name="in_gym" value="true">true
+                  <input <%=disBtn%> type="radio" name="in_gym" value="false">false
                   <select name="trainer_id">
                   <%for (let i=0;i<trainers.length;i++){%>
                   <option value='<%=trainers[i].id%>'><%=trainers[i].name%></option>

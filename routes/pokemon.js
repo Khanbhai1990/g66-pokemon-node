@@ -40,12 +40,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/addPokemon', function(req, res, next){
+  let boo = req.body.in_gym
+
+  if(req.session.accum || req.session.accum>0){
+    boo = false
+  }
 
   knex('pokemon')
     .insert({
       name: req.body.name,
       cp: req.body.cp,
-      in_gym:req.body.in_gym,
+      in_gym:boo,
       trainer_id:req.body.trainer_id
     }, '*')
     .then((result)=>{
@@ -77,13 +82,18 @@ router.get('/edit/:id', function(req, res, next) {
           let pokemon = data[0]
           knex('trainers')
             .then((trainers)=>{
-          res.render(`pokemon/edit`, {pokemon, trainers});
+          res.render(`pokemon/edit`, {pokemon, trainers, accum:req.session.accum});
           })
         })
 
 });
 
 router.post('/edit/:id', function(req,res){
+  let boo = req.body.in_gym
+
+  if(req.session.accum || req.session.accum>0){
+    boo = false
+  }
   knex('pokemon')
       .where('id', req.params.id)
       .update({
@@ -91,7 +101,7 @@ router.post('/edit/:id', function(req,res){
         name: undefined,
         cp:req.body.cp,
         trainer_id: req.body.trainer_id,
-        in_gym: req.body.in_gym
+        in_gym: boo
       }, '*')
       .then((result)=>{
 
