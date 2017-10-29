@@ -30,7 +30,7 @@ router.post('/player1', function(req,res){
   }
 
     if(req.session.addOne === 0 || !req.session.accum === 3){
-    req.session.addOne++
+    req.session.addOne = 1
   req.session.accum = 3
   knex('pokemon')
       .where('id', req.body.id)
@@ -65,7 +65,7 @@ router.post('/player2', function(req,res){
 
   if (req.session.add ===0 || !req.session.accum === 1){
   req.session.accum = 1
-  req.session.add++
+  req.session.add = 1
 
 
   knex('pokemon')

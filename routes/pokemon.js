@@ -134,7 +134,6 @@ if (req.session.add === 1){
 
 }
   if (req.session.accum===1){
-    console.log("p1 is true")
     req.session.p1 = "true"
   knex('pokemon')
       .where('id', req.params.id)
@@ -158,8 +157,6 @@ if (req.session.add === 1){
   }
 
   if (req.session.accum===2){
-    console.log("p2 is true")
-
     req.session.p2 = "true"
   knex('pokemon')
       .where('id', req.params.id)

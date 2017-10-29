@@ -17,6 +17,7 @@
       </tr>
       </thead>
   <tbody>
+    
     <%for (let i=0;i<pokemon.length;i++){%>
     <%if (pokemon[i].in_gym){status="remove pokemon"} else if (accum===2 || add===1 || addOne ===1) {status =""} else {status = "assign to gym"} %>
     <%let image = pokemon[i].name%>
