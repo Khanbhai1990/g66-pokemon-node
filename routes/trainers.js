@@ -18,10 +18,11 @@ router.get('/', function(req, res, next) {
 router.get('/player/:id', function(req, res, next) {
 
   knex('trainers')
-        .join('pokemon','trainers.id', '=', 'trainer_id')
+        .leftJoin('pokemon','trainers.id', '=', 'trainer_id')
         .select('trainers.name','pokemon.id as pokemon_id','pokemon.name as pokemon_name', 'pokemon.trainer_id', 'pokemon.cp', 'pokemon.in_gym')
         .where('trainers.id', req.params.id)
         .then((trainer)=>{
+          console.log(trainer)
           res.render(`trainers/player`, {trainer});
         })
 

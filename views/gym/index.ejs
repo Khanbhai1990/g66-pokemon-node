@@ -6,8 +6,9 @@
 <%let pokeLengthTwo =""%>
 <%let count = 0%>
 
-<%if (playerOneCp>0) pokeLength = "hidden"%>
-<%if (playerTwoCp>0) pokeLengthTwo = "hidden"%>
+
+<%if (pokemonOneCp>0) pokeLength = "hidden"%>
+<%if (pokemonTwoCp>0) pokeLengthTwo = "hidden"%>
 
 <span style="color:white">
     <form action="/gym/player1" method="post">
@@ -15,50 +16,92 @@
         <select name="id">
         <%for (let i=0;i<pokemon.length;i++){%>
           <%if(!pokemon[i].in_gym){%>
-        <option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
+        <<%=pokeLength%>option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
           <%}%>
         <%}%>
         </select>
       <span style="color:black"><<%=pokeLength%>input type="submit"></span>
       </form>
 
-<%=playerOneCp%>
-  <h3>Pokemon One</h3>
-<%let players = 0%>
-        <%for (let i=0;i<pokemon.length;i++){%>
-        <%if (pokemon[i].in_gym){%>
-          <%players++%>
-          <p><%=pokemon[i].name%></p>
-          <p><%=pokemon[i].cp%></p>
-          <%}%>
-        <%}%>
 
-      <h3>Pokemon Two</h3>
 
       <form action="/gym/player2" method="post">
           <select name="id">
           <%for (let i=0;i<pokemon.length;i++){%>
             <%if(!pokemon[i].in_gym){%>
-          <option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
+          <<%=pokeLengthTwo%>option value='<%=pokemon[i].id%>'><%=pokemon[i].name%></option>
             <%}%>
           <%}%>
           </select>
         <span style="color:black"><<%=pokeLengthTwo%>input type="submit"></span>
         </form>
 
-<%=playerTwoCp%>
 
+<div class="row">
+  <div class="col s6">
+<h3>Pokemon One</h3>
+  <%if(pokemonOneCp>0){%>
+    <%=pokemonOneName%>
+    <%var smallOne = pokemonOneName%>
+    <img src="https://img.pokemondb.net/artwork/<%=smallOne.toLowerCase()%>.jpg" alt="">
+<%}%>
+  </div>
 
+    <div class="col s6">
+<h3>Pokemon Two</h3>
+<%if(pokemonTwoCp>0){%>
+    <%=pokemonTwoName%>
+    <%var smallTwo = pokemonTwoName%>
+    <img src="https://img.pokemondb.net/artwork/<%=smallTwo.toLowerCase()%>.jpg" alt="">
+  <%}%>
+  </div>
+
+</div>
+  <div class="row">
+      <div class="col s6">
           <form action="/gym/reset" method="get">
-    <span style="color:green"><button type="submit">Reset</button></span>
+          <span style="color:green"><button class="waves-effect #1976d2 blue darken-2 waves-light btn modal-trigger" type="submit">Reset</button></span>
             </form>
+      </div>
+
+              <%if(pokemonOneCp>0 && pokemonTwoCp>0){%>
+
+          <div class="col s6">
+                  <!-- Modal Trigger -->
+                  <a class="waves-effect #e53935 red darken-1 waves-light btn modal-trigger" href="#modal1">Battle!!</a>
+            </div>
+
+  </div>
 
 
-              <%if(players===2){%>
-            <form action="/gym/result" method="get">
-          <span style="color:black"><button type="submit">Battle!</button></span>
-              </form>
-              <%}%>
+                  <!-- Modal Structure -->
+                  <div id="modal1" class="modal modal-fixed-footer">
+                    <span style="color:black">
+                    <div class="modal-content">
+                      <%if(pokemonOneCp>pokemonTwoCp){%>
+                          <h4> <%=pokemonOneName %> with CP:<%=pokemonOneCp %> beats <%=pokemonTwoName %>!!!</h4>
+                          <img src="https://img.pokemondb.net/artwork/<%=smallOne.toLowerCase()%>.jpg" alt="">
+                        <%} else if (pokemonOneCp<pokemonTwoCp) {%>
+                          <h4> <%=pokemonTwoName %> Wins! </h4>
+                              <%=pokemonTwoName %> with CP:<%=pokemonTwoCp %> beats <%=pokemonOneName %> !!!
+
+                            <img src="https://img.pokemondb.net/artwork/<%=smallTwo.toLowerCase()%>.jpg" alt="">
+
+                            <%} else {%>
+                              This is why I dont travel to Chicago
+                              <img style='height: 50%; width: 50%; object-fit: contain'  src="https://pbs.twimg.com/media/DNNEP8vXUAEgUrZ.jpg" alt="">
+                              <%}%>
+                    </div>
+                      </span>
+                    <div class="modal-footer black-text">
+                        <h4>Hit Reset to Update the CP column!</h4>
+                      </div>
+
+                  </div>
+                <%}%>
+
+
+
 
 </span>
 
@@ -73,5 +116,14 @@
   <script type="text/javascript">
   $(document).ready(function() {
   $('select').material_select();
+  $('.modal').modal({
+     dismissible: true, // Modal can be dismissed by clicking outside of the modal
+     opacity: 0, // Opacity of modal background
+     inDuration: 300, // Transition in duration
+     outDuration: 200, // Transition out duration
+     startingTop: '4%', // Starting top style attribute
+     endingTop: '10%', // Ending top style attribute
+   }
+ );
 });
   </script>

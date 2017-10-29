@@ -9,12 +9,14 @@ router.get('/', function(req, res, next) {
     req.session.accum = 0
   }
 
-  if (!req.session.playerOneCp){
-    req.session.playerOneCp = 0
+  if (!req.session.pokemonOneCp){
+    req.session.pokemonOneCp = 0
+    req.session.pokemonOneName =""
   }
 
-  if (!req.session.playerTwoCp){
-    req.session.playerTwoCp = 0
+  if (!req.session.pokemonTwoCp){
+    req.session.pokemonTwoCp = 0
+    req.session.pokemonTwoName = ""
   }
 
 
@@ -25,15 +27,20 @@ router.get('/', function(req, res, next) {
       .then((pokemon)=>{
           knex('trainers')
             .then((trainers)=>{
+              req.session.save(function (err){
+                if (err) throw err;
 
-              res.render('pokemon/index', {pokemon, trainers, accum: req.session.accum});
-            })
+
+              res.render('pokemon/index', {pokemon, trainers, accum: req.session.accum, addOne:req.session.addOne, add:req.session.add});
+                })
+        })
 
       })
 
 });
 
 router.post('/addPokemon', function(req, res, next){
+
   knex('pokemon')
     .insert({
       name: req.body.name,
@@ -42,9 +49,9 @@ router.post('/addPokemon', function(req, res, next){
       trainer_id:req.body.trainer_id
     }, '*')
     .then((result)=>{
-      res.redirect('/');
-    })
 
+    })
+  res.redirect('/');
 });
 
 router.get('/delete/:id', function(req, res, next){
@@ -87,11 +94,12 @@ router.post('/edit/:id', function(req,res){
         in_gym: req.body.in_gym
       }, '*')
       .then((result)=>{
-        res.redirect('/');
+
       })
       .catch((err)=>{
         console.error(err);
       });
+      res.redirect('/');
 })
 
 
@@ -138,7 +146,8 @@ if (req.session.add === 1){
         in_gym: req.session.p1
       }, '*')
       .then((result)=>{
-          req.session.playerOneCp = result[0].cp
+          req.session.pokemonOneCp = result[0].cp
+          req.session.pokemonOneName = result[0].name
           req.session.save(function (err){
             if (err) throw err;
           })
@@ -162,7 +171,8 @@ if (req.session.add === 1){
         in_gym: req.session.p2
       }, '*')
       .then((result)=>{
-          req.session.playerTwoCp = result[0].cp
+          req.session.pokemonTwoCp = result[0].cp
+          req.session.pokemonTwoName = result[0].name
           req.session.save(function (err){
             if (err) throw err;
           })
@@ -178,7 +188,9 @@ if (req.session.add === 1){
     if (req.session.addOne === 1){
       req.session.accum = 0
     }
+    req.session.pokemonOneCp = 0
     req.session.addOne = 0
+    req.session.pokemonOneName = ""
   knex('pokemon')
       .where('id', req.params.id)
       .update({
@@ -201,6 +213,8 @@ if (req.session.add === 1){
     req.session.p2 = "false"
     req.session.add =0
     req.session.accum = 0
+    req.session.pokemonTwoCp = 0
+    req.session.pokemonTwoName = ""
   knex('pokemon')
       .where('id', req.params.id)
       .update({

@@ -3,13 +3,12 @@
 <%- contentFor('body') %>
 
 <%let status;%>
-
-<span style="color:white">Pokemón home page.</span>
-
+<button id="myBtn">+ Add New Pokemon</button>
 <table class="darkTable" >
 
       <thead>
         <tr>
+        <th>Images</th>
         <th>ID</th>
         <th>name</th>
         <th>trainer name</th>
@@ -19,8 +18,12 @@
       </thead>
   <tbody>
     <%for (let i=0;i<pokemon.length;i++){%>
-    <%if (pokemon[i].in_gym){status="remove pokemon"} else if (accum===2) {status =""} else {status = "assign to gym"} %>
+    <%if (pokemon[i].in_gym){status="remove pokemon"} else if (accum===2 || add===1 || addOne ===1) {status =""} else {status = "assign to gym"} %>
+    <%let image = pokemon[i].name%>
     <tr>
+
+      <td><img style='height: 20%; width: 25%; object-fit: contain' src="https://img.pokemondb.net/artwork/<%=image.toLowerCase()%>.jpg" alt=""></td>
+
       <td><%=pokemon[i].id%></td>
       <td><a href="/pokemon/character/<%=pokemon[i].id%>"><%=pokemon[i].name%></a></td>
       <td><%=pokemon[i].trainers_name%></td>
@@ -33,40 +36,37 @@
     </tbody>
 
   </table>
-  <!-- Trigger/Open The Modal -->
-<button id="myBtn">+ Add New Pokemon</button>
 
-      <!-- The Modal -->
+
     <div id="myModal" class="modal">
 
-          <!-- Modal content -->
           <div class="modal-content">
             <div class="modal-header">
               <span class="close">&times;</span>
-              <h2>Modal Header</h2>
+              <h2>Add Pokemon</h2>
             </div>
             <div class="modal-body">
 
-              <form action="/pokemon/addPokemon" method="post">
+              <form action="/pokemon/addPokemon" method="post" >
                 <p></p>
                   <input type="text" name="name" placeholder="name">
                   <input type="number" name="cp" placeholder="cp">
                   In_Gym
-                  <input type="checkbox" name="in_gym" value="true">true
-                  <input type="checkbox" name="in_gym" value="false">false
+                  <input type="radio" name="in_gym" value="true">true
+                  <input type="radio" name="in_gym" value="false">false
                   <select name="trainer_id">
                   <%for (let i=0;i<trainers.length;i++){%>
                   <option value='<%=trainers[i].id%>'><%=trainers[i].name%></option>
                   <%}%>
                   </select>
-                <input type="submit">
+                <input input type="submit">
                 </form>
                 <p></p>
 
 
             </div>
             <div class="modal-footer">
-              <h3>Modal Footer</h3>
+              <h3>Lets GO!!</h3>
             </div>
           </div>
 
@@ -74,7 +74,7 @@
 
 <!-- <button type="button" name="button" id="add_new">+ Add New Pokemon</button> -->
 
-
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script type="text/javascript">
   //  var btn = document.getElementById("add_new");
@@ -107,5 +107,7 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 }
+
+
 
 </script>

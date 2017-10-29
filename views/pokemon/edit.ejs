@@ -10,8 +10,8 @@
 <span style="color:white">
 <form class="" action="/pokemon/edit/<%=pokemon.id%>" method="post">
       <input type="number" name="cp" value="<%=pokemon.cp%>">
-      <input type="checkbox" name="in_gym" value="true">true
-      <input type="checkbox" name="in_gym" value="false">false
+      <input type="radio" name="in_gym" value="true">true
+      <input type="radio" name="in_gym" value="false">false
       <select name="trainer_id">
       <%for (let i=0;i<trainers.length;i++){%>
       <option value='<%=trainers[i].id%>'><%=trainers[i].name%></option>

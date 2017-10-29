@@ -5,16 +5,18 @@ var router = express.Router();
 
 router.get('/', function(req, res, next) {
 
-  if (!req.session.playerOneCp){
-    req.session.playerOneCp = 0
+  if (!req.session.pokemonOneCp){
+    req.session.pokemonOneCp = 0
+    req.session.pokemonOne = ""
   }
 
-  if (!req.session.playerTwoCp){
-    req.session.playerTwoCp = 0
+  if (!req.session.pokemonTwoCp){
+    req.session.pokemonTwoCp = 0
+    req.session.pokemonTwo = ""
   }
   knex('pokemon')
       .then((pokemon)=>{
-        res.render('gym/index', {pokemon, playerOneCp:req.session.playerOneCp, playerTwoCp:req.session.playerTwoCp });
+        res.render('gym/index', {pokemon, pokemonOneCp:req.session.pokemonOneCp, pokemonTwoCp:req.session.pokemonTwoCp, pokemonOneName:req.session.pokemonOneName, pokemonTwoName:req.session.pokemonTwoName});
       })
       .catch((err)=>{
         console.error(err);
@@ -40,7 +42,8 @@ router.post('/player1', function(req,res){
         in_gym: "true"
       }, '*')
       .then((result)=>{
-        req.session.playerOneCp = result[0].cp
+        req.session.pokemonOneCp = result[0].cp
+        req.session.pokemonOneName = result[0].name
         req.session.save(function (err){
           if (err) throw err;
           res.redirect('/gym');
@@ -55,7 +58,7 @@ router.post('/player1', function(req,res){
 })
 
 router.post('/player2', function(req,res){
-  req.session.playerTwoCp = req.body.cp
+  // req.session.PokemonTwoCp = req.body.cp
   if (!req.session.add){
     req.session.add = 0
   }
@@ -63,7 +66,7 @@ router.post('/player2', function(req,res){
   if (req.session.add ===0 || !req.session.accum === 1){
   req.session.accum = 1
   req.session.add++
-  
+
 
   knex('pokemon')
       .where('id', req.body.id)
@@ -75,7 +78,8 @@ router.post('/player2', function(req,res){
         in_gym: "true"
       }, '*')
       .then((result)=>{
-        req.session.playerTwoCp = result[0].cp
+        req.session.pokemonTwoCp = result[0].cp
+        req.session.pokemonTwoName = result[0].name
         req.session.save(function (err){
           if (err) throw err;
           res.redirect('/gym');
@@ -89,11 +93,46 @@ router.post('/player2', function(req,res){
 })
 
 router.get('/reset', function(req,res){
+    if (req.session.pokemonOneCp>req.session.pokemonTwoCp){
+      knex('pokemon')
+        .where('name', req.session.pokemonOneName)
+        .update({
+          id: undefined,
+          name: undefined,
+          cp: req.session.pokemonOneCp+20,
+          trainer_id: undefined,
+          in_gym: undefined
+        }, "*")
+        .then((result)=>{
+
+        })
+        .catch((err)=>{
+          console.error(err);
+        });
+    }
+
+    if (req.session.pokemonTwoCp>req.session.pokemonOneCp){
+      knex('pokemon')
+        .where('name', req.session.pokemonTwoName)
+        .update({
+          id: undefined,
+          name: undefined,
+          cp: req.session.pokemonTwoCp+20,
+          trainer_id: undefined,
+          in_gym: undefined
+        }, "*")
+        .then((result)=>{
+
+        })
+        .catch((err)=>{
+          console.error(err);
+        });
+    }
     req.session.addOne = 0
     req.session.add = 0
     req.session.accum = 0
-    req.session.playerOneCp = 0
-    req.session.playerTwoCp = 0
+    req.session.pokemonOneCp = 0
+    req.session.pokemonTwoCp = 0
   knex('pokemon')
     .update({
       id: undefined,
@@ -108,7 +147,10 @@ router.get('/reset', function(req,res){
     .catch((err)=>{
       console.error(err);
     });
-res.redirect('/gym');
+    req.session.save(function (err){
+      if (err) throw err;
+      res.redirect('/gym');
+    })
 })
 
 

@@ -23,6 +23,8 @@ a img{
   border: 0px;
 }
 
+
+
 ::-moz-selection {
   background-color: #6ab344;
   color: #fff;
@@ -436,35 +438,10 @@ a img{
     font-size: 16px;
   }
 
-.pokemon-footer {
+footer {
   background-color: #fafafa;
-  position: relative;
+  position: sticky;
 }
-
-  .pokemon-footer a:hover {
-    color: #8bc34a;
-  }
-
-  .pokemon-footer .mdl-mega-footer--top-section::after {
-    border-bottom: none;
-  }
-
-  .pokemon-footer .mdl-mega-footer--middle-section::after {
-    border-bottom: none;
-  }
-
-  .pokemon-footer .mdl-mega-footer--bottom-section {
-    position: relative;
-  }
-
-  .pokemon-footer .mdl-mega-footer--bottom-section a {
-    margin-right: 2em;
-  }
-
-  .pokemon-footer .mdl-mega-footer--right-section a .material-icons {
-    position: relative;
-    top: 6px;
-  }
 
 
 .pokemon-link-menu:hover {
@@ -640,7 +617,7 @@ table.darkTable tfoot td {
 /* Modal Header */
 .modal-header {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: red;
     color: white;
 }
 
@@ -650,7 +627,7 @@ table.darkTable tfoot td {
 /* Modal Footer */
 .modal-footer {
     padding: 2px 16px;
-    background-color: #5cb85c;
+    background-color: red;
     color: white;
 }
 
